@@ -32,7 +32,6 @@ public class PrimaryController {
     private void switchToSecondary() throws IOException { // ahora es boton traducir 
         arbolMorse.crearArbolMorse(cod);
         arbolMorse.anchura();
-//        flowPane.getChildren().addAll(arbolMorse.crearArbolMorse(cod));
 //        arbolMorse.codificarArbolMorse(codigoIngresdo.getText(), arbolMorse);
 //        App.setRoot("secondary");
     }
