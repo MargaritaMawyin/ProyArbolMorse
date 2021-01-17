@@ -7,7 +7,6 @@ package proyectoMorse.controlador;
 
 import java.net.URL;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -49,13 +48,13 @@ public class AplicacionControlador implements Initializable {
     }    
     
     @FXML
-    private void escuchar(ActionEvent event) {
-        System.out.println("Está escuchando...");
+    private void escuchar(ActionEvent event) {        
         String textRecolected = campoTexToModify.getText().toUpperCase();
         campoTexToModify.clear();
         if(textRecolected.isBlank()) {
             System.out.println("No escribió algo");
         }else{
+            System.out.println("Está escuchando... shhh");
             System.out.println(textRecolected);
             zonaDeArbol.escuchar(textRecolected, zonaDeDibujo);
         }
@@ -63,9 +62,9 @@ public class AplicacionControlador implements Initializable {
 
     private BinaryTreeKevin<String> cargarArbol(HashMap<String, List<String>> mapa){
         BinaryTreeKevin<String> arbolBinario = new BinaryTreeKevin<>();
-        for(String clave : mapa.keySet()){
+        mapa.keySet().forEach((clave) -> {
             arbolBinario.addMorse(clave, mapa.get(clave));
-        }
+        });
         return arbolBinario;
     }
     

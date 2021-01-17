@@ -1,25 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package proyectoMorse.modelo;
 
 import java.util.Objects;
 import javafx.application.Platform;
-import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import proyectoMorse.controlador.App;
 import static proyectoMorse.controlador.App.mPunto;
 import static proyectoMorse.controlador.App.mRaya;
-import static proyectoMorse.controlador.App.mediaPlayerDer;
-import static proyectoMorse.controlador.App.mediaPlayerIzq;
 import static proyectoMorse.controlador.App.tiempoDer;
 import static proyectoMorse.controlador.App.tiempoIzq;
 
@@ -34,6 +24,7 @@ public class Circulo extends Circle implements Runnable {
     private Text contenido;
     private double x, y, radio, ancho;
     private boolean izqCircle;
+    private boolean lastCircle;
     
     
     public Circulo(String contenido, double x, double y, double radio, double ancho) {
@@ -83,6 +74,14 @@ public class Circulo extends Circle implements Runnable {
         this.izqCircle = izqCicle;
     }
 
+    public boolean isLastCircle() {
+        return lastCircle;
+    }
+
+    public void setLastCircle(boolean lastCircle) {
+        this.lastCircle = lastCircle;
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;
@@ -102,53 +101,36 @@ public class Circulo extends Circle implements Runnable {
             return false;
         }
         final Circulo other = (Circulo) obj;
-        if (!Objects.equals(this.mensaje, other.mensaje)) {
-            return false;
-        }
-        return true;
+        return(Objects.equals(this.mensaje, other.mensaje)); 
     }            
     
     @Override
     public void run() {
-        Platform.runLater(() -> { 
-            //this.setFill(Color.RED);
+        Platform.runLater(() -> {            
             if(isIzqCircle()){
-                if(lineaIzq!=null) lineaIzq.setFill(Color.RED);
-                System.out.println("Suena izq");
-                //reproducirNotaIzq();     
-                mediaPlayerIzq = new MediaPlayer(mRaya);
-                mediaPlayerIzq.setOnReady(new Runnable(){
-                    @Override
-                    public void run() {
-                        mediaPlayerIzq.play();
-                    }
-                });
-                setFill(Color.GREEN);
-                try {
-                    Thread.sleep((long)tiempoIzq);
-                }catch(InterruptedException ex) {
-                    System.out.println("Error en carga de tiempo song");
-                }                                   
+                if(lastCircle)
+                    reproducirSonido(Color.RED, (long)tiempoIzq, mRaya);
+                else
+                    reproducirSonido(Color.GREEN, (long)tiempoIzq, mRaya);
             }else{
-                if(lineaDer!=null) lineaDer.setFill(Color.RED);
-                System.out.println("Suena Der");
-                //reproducirNotaDer();
-                mediaPlayerDer = new MediaPlayer(mPunto);
-                mediaPlayerDer.setOnReady(new Runnable(){
-                    @Override
-                    public void run() {
-                        mediaPlayerDer.play();
-                    }
-                });
-                setFill(Color.BLUE);
-                try {
-                    Thread.sleep((long)App.tiempoDer);
-                }catch(InterruptedException ex) {
-                    System.out.println("Error en carga de tiempo song");
-                }                 
+                if(lastCircle)
+                    reproducirSonido(Color.RED, (long)tiempoDer, mPunto);
+                else
+                    reproducirSonido(Color.BLUE, (long)tiempoDer, mPunto);
             }
         });
     }
     
-    
+    private void reproducirSonido(Color color, long tiempo, Media media){
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setOnReady(() -> {
+            mediaPlayer.play();
+            setFill(color);
+            try {
+                Thread.sleep(tiempo);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
 }

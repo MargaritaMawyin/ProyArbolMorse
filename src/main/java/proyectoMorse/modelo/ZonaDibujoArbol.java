@@ -6,27 +6,15 @@
 
 package proyectoMorse.modelo;
 
-import java.io.File;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import javafx.application.Platform;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
-import proyectoMorse.constantes.Constantes;
 import proyectoMorse.controlador.App;
-import proyectoMorse.modelo.BinaryTreeKevin;
 
 /**
  * 
@@ -83,24 +71,18 @@ public class ZonaDibujoArbol extends Pane {
     
     public void escuchar(String texto, Pane zonaDibujo){
         String[] textArray = texto.trim().split(" ");
-        this.getChildren().clear();
-        ZonaDibujoArbol zonaLimpia = dibujarArbol();
-        for(int j=0; j<textArray.length; j++){
-            String palabra = textArray[j];
+        this.getChildren().clear(); dibujarArbol();
+        List<String> listText = Arrays.asList(textArray);
+        Iterator<String> palabraIte = listText.iterator();
+        while(palabraIte.hasNext()){
+            String palabra = palabraIte.next();
+            List<String> letraList = new ArrayList<>();
             for(int i=0; i<palabra.length(); i++){
-                String letra = palabra.charAt(i)+"";
-                List<String> listaMorse = App.mapaMorse.get(letra);
-                ListIterator<String> it = (listaMorse!=null)?listaMorse.listIterator():null;
-                if(listaMorse!=null){
-                    try {
-                        Thread.sleep((long)contarTiempo(listaMorse));
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-                escucharLetra(it, arbolBinario.getRoot(), zonaDibujo);
+                letraList.add(palabra.charAt(i)+"");
             }
-        }       
+            Iterator<String> letraIte = letraList.iterator();
+            iterarLetras(letraIte, zonaDibujo);
+        }    
     }
     
     public Circulo obtenerCirculo(String data, ZonaDibujoArbol zonaDibujoArbol){
@@ -114,8 +96,6 @@ public class ZonaDibujoArbol extends Pane {
     }
     
     private void escucharLetra(ListIterator<String> it, Nodo<String> parent, Pane pane){        
-//        String pathPunto = this.getClass().getResource("/recursos/Punto.mpeg").toString();
-//        String pathRaya = this.getClass().getResource("/recursos/Raya.mpeg").toString();
         if(it!=null && it.hasNext()){
             try{
                 String codigo = it.next();
@@ -123,9 +103,9 @@ public class ZonaDibujoArbol extends Pane {
                     String data = parent.getLeft().getData();
                     Circulo circuloModificar = obtenerCirculo(data, this);
                     circuloModificar.setIzqCircle(true);
+                    circuloModificar.setLastCircle(!it.hasNext());
                     Thread t1 = new Thread(circuloModificar);
-                    //t1.start();
-                    t1.run();
+                    t1.start();
                     if(it.hasNext()){
                         escucharLetra(it, parent.getLeft(), pane);
                     }                    
@@ -134,14 +114,13 @@ public class ZonaDibujoArbol extends Pane {
                     String data = parent.getRight().getData();
                     Circulo circuloModificar = obtenerCirculo(data, this);
                     circuloModificar.setIzqCircle(false);
+                    circuloModificar.setLastCircle(!it.hasNext());
                     Thread t1 = new Thread(circuloModificar);
-                    //t1.start();
-                    t1.run();
+                    t1.start();
                     if(it.hasNext()){
                         escucharLetra(it, parent.getRight(), pane);
                     }
                 }
-
             }catch(Exception e){
                 System.out.println("Error en los audios: "+e.getMessage());
             }
@@ -161,5 +140,20 @@ public class ZonaDibujoArbol extends Pane {
             }
         }
         return tiempo;
+    }
+    
+    private void iterarLetras(Iterator<String> letraIte, Pane zonaDibujo){
+        String letra = letraIte.next();
+        List<String> listaMorse = App.mapaMorse.get(letra);
+        ListIterator<String> it = (listaMorse!=null)?listaMorse.listIterator():null;
+        escucharLetra(it, arbolBinario.getRoot(), zonaDibujo);
+        if(listaMorse!=null){
+//            try {
+//                Thread.sleep((long)contarTiempo(listaMorse));
+//            } catch (InterruptedException ex) {
+//                System.out.println("Error en iterar letras: "+ex.getMessage());
+//            }           
+        }
+        if(letraIte.hasNext()) iterarLetras(letraIte, zonaDibujo);
     }
 }
