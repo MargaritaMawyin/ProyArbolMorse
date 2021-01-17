@@ -1,0 +1,33 @@
+
+.button {
+    -fx-text-fill: black;
+    -fx-font-family: "Arial ";
+    -fx-background-color: linear-gradient(#3498DB, #2ECC71);
+   -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-size: 12px;
+}
+
+.label {
+    -fx-font-size: 12px;
+    -fx-padding: 10 15 10 15;
+    -fx-font-family: "Arial";
+   
+
+}
+
+.text{
+   -fx-font-size: 12px;
+   -fx-font-family: "Arial Black";
+   /*-fx-fill: #818181;*/
+   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+   -fx-text-fill: #dc7633;
+}
+.table{
+   -fx-font-size: 12px;
+   -fx-font-family: "Arial Black";
+   /*-fx-fill: #818181;*/
+   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+   -fx-text-fill: #dc7633; 
+}
+
+

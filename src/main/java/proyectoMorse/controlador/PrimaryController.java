@@ -1,5 +1,6 @@
-package com.mycompany.proyarbolmorse;
+package proyectoMorse.controlador;
 
+import proyectoMorse.colecciones.BinaryTree;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -28,13 +29,7 @@ public class PrimaryController {
         
         
     }
-    @FXML
-    private void switchToSecondary() throws IOException { // ahora es boton traducir 
-        arbolMorse.crearArbolMorse(cod);
-        arbolMorse.anchura();
-//        arbolMorse.codificarArbolMorse(codigoIngresdo.getText(), arbolMorse);
-//        App.setRoot("secondary");
-    }
+
     public  void cargarArchivoConBT() throws IOException {
         try{
             List<String> lineas = Files.readAllLines(Paths.get("codMorse.txt")); 

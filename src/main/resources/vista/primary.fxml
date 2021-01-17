@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="473.0" prefWidth="599.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.proyarbolmorse.PrimaryController">
+<VBox alignment="CENTER" prefHeight="473.0" prefWidth="599.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoMorse.controlador.PrimaryController">
    <children>
       <FlowPane fx:id="flowPane" prefHeight="458.0" prefWidth="559.0" />
       <HBox prefHeight="100.0" prefWidth="200.0">

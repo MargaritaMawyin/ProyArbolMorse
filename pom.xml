@@ -10,9 +10,34 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
     <dependencies>
-        <dependency>
+        <dependency>        
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>13</version>
+        </dependency>
+        <dependency>        
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
+            <version>13</version>
+        </dependency>
+        <dependency>        
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>13</version>
+        </dependency>
+        <dependency>        
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>13</version>
+        </dependency>
+        <dependency>        
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>13</version>
+        </dependency>
+        <dependency>        
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
             <version>13</version>
         </dependency>
         <dependency>
@@ -36,7 +61,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.3</version>
                 <configuration>
-                    <mainClass>com.mycompany.proyarbolmorse.App</mainClass>
+                    <mainClass>proyectoMorse.controlador.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>
