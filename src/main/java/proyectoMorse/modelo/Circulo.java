@@ -25,13 +25,15 @@ public class Circulo extends Circle implements Runnable {
     private double x, y, radio, ancho;
     private boolean izqCircle;
     private boolean lastCircle;
+    private ZonaDibujoArbol zone;
     
     
-    public Circulo(String contenido, double x, double y, double radio, double ancho) {
+    public Circulo(String contenido, double x, double y, double radio, double ancho, ZonaDibujoArbol zone) {
         super(x+12, y+18, radio);
         this.mensaje = contenido;
         this.contenido = new Text(x+11-(contenido.length()*2), y+20, contenido);
         this.x=x; this.y=y; this.radio=radio; this.ancho=ancho;
+        this.zone = zone;
     }
 
     public Text getContenido() {
@@ -127,7 +129,7 @@ public class Circulo extends Circle implements Runnable {
             mediaPlayer.play();
             setFill(color);
             try {
-                Thread.sleep(tiempo);
+                Thread.sleep(tiempo);                
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
