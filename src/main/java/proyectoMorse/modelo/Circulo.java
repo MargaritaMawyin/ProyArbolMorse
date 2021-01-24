@@ -1,5 +1,6 @@
 package proyectoMorse.modelo;
 
+import java.lang.System.Logger.Level;
 import java.util.Objects;
 import javafx.application.Platform;
 import javafx.scene.media.Media;
@@ -8,10 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import static proyectoMorse.controlador.App.mPunto;
-import static proyectoMorse.controlador.App.mRaya;
-import static proyectoMorse.controlador.App.tiempoDer;
-import static proyectoMorse.controlador.App.tiempoIzq;
+import proyectoMorse.controlador.App;
 
 /**
  * 
@@ -25,15 +23,17 @@ public class Circulo extends Circle implements Runnable {
     private double x, y, radio, ancho;
     private boolean izqCircle;
     private boolean lastCircle;
-    private ZonaDibujoArbol zone;
+//    private ZonaDibujoArbol zone;
+  
     
-    
-    public Circulo(String contenido, double x, double y, double radio, double ancho, ZonaDibujoArbol zone) {
+    public Circulo(){
+    }
+    public Circulo(String contenido, double x, double y, double radio, double ancho) { //, ZonaDibujoArbol zone
         super(x+12, y+18, radio);
         this.mensaje = contenido;
         this.contenido = new Text(x+11-(contenido.length()*2), y+20, contenido);
         this.x=x; this.y=y; this.radio=radio; this.ancho=ancho;
-        this.zone = zone;
+//        this.zone = zone;
     }
 
     public Text getContenido() {
@@ -108,18 +108,20 @@ public class Circulo extends Circle implements Runnable {
     
     @Override
     public void run() {
-        Platform.runLater(() -> {            
+        Platform.runLater(() -> { 
             if(isIzqCircle()){
-                if(lastCircle)
-                    reproducirSonido(Color.RED, (long)tiempoIzq, mRaya);
+                if(!lastCircle)
+                    reproducirSonido(Color.GREEN, (long)App.getTiempoIzq(), App.getmRaya());
                 else
-                    reproducirSonido(Color.GREEN, (long)tiempoIzq, mRaya);
+                    reproducirSonido(Color.RED, (long)App.getTiempoIzq(), App.getmRaya());
+                    
             }else{
-                if(lastCircle)
-                    reproducirSonido(Color.RED, (long)tiempoDer, mPunto);
+                if(!lastCircle)
+                    reproducirSonido(Color.BLUE, (long)App.getTiempoDer(), App.getmPunto()); 
                 else
-                    reproducirSonido(Color.BLUE, (long)tiempoDer, mPunto);
+                    reproducirSonido(Color.RED, (long)App.getTiempoDer(), App.getmPunto());
             }
+            
         });
     }
     
@@ -128,10 +130,13 @@ public class Circulo extends Circle implements Runnable {
         mediaPlayer.setOnReady(() -> {
             mediaPlayer.play();
             setFill(color);
+            
             try {
                 Thread.sleep(tiempo);                
             } catch (InterruptedException ex) {
-                ex.printStackTrace();
+                ex.getLocalizedMessage();
+                Thread.currentThread().interrupt();
+                
             }
         });
     }

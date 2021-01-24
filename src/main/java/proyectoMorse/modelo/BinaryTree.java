@@ -1,8 +1,6 @@
 package proyectoMorse.modelo;
 
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Comparator;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -12,14 +10,15 @@ import java.util.Objects;
 /**
  * 
  * @author KevinChevez
+ * @param <E>
  */
-public class BinaryTreeKevin<E> {
+public class BinaryTree<E> {
     private Nodo<E> root;
     
     /**
      * Nodo queda vacio
      */
-    public BinaryTreeKevin(){
+    public BinaryTree(){
     }    
     
     /**
@@ -173,38 +172,7 @@ public class BinaryTreeKevin<E> {
         System.out.println("");
     }
     
-    public void preOrden(){
-        preOrden(root);
-    }
-    private void preOrden(Nodo<E> parent){
-        if(parent!=null){
-            System.out.print(parent.getData()+" ");
-            preOrden(parent.getLeft());
-            preOrden(parent.getRight());
-        }
-    }
-    
-    public void inOrden(){
-        inOrden(root);
-    }
-    private void inOrden(Nodo<E> parent){
-        if(parent!=null){
-            inOrden(parent.getLeft());
-            System.out.print(parent.getData()+" ");
-            inOrden(parent.getRight());
-        }
-    }
-    
-    public void postOrden(){
-        postOrden(root);
-    }
-    private void postOrden(Nodo<E> parent){
-        if(parent!=null){
-            postOrden(parent.getLeft());
-            postOrden(parent.getRight());
-            System.out.print(parent.getData()+" ");
-        }
-    }
+  
     
     public int size(){
         return size(root);
@@ -226,20 +194,7 @@ public class BinaryTreeKevin<E> {
         return 1 + Math.max(height(n.getLeft()), height(n.getRight()));
     }
     
-    public int countLeaves(){
-        return countLeaves(root);
-    }
-    private int countLeaves(Nodo<E> n){
-        if(n == null){
-            return 0;
-        }
-        else if((n.getLeft() == null) && (n.getRight()==null)){
-            return 1;
-        }
-        else{
-            return countLeaves(n.getLeft())+countLeaves(n.getRight());
-        }
-    }
+    
     
     public boolean isFull(){
         return isFull(root);
@@ -248,39 +203,16 @@ public class BinaryTreeKevin<E> {
         if(n == null){
             return true;
         }
-        if((n.getLeft() == null && n.getRight() ==null) || (n.getLeft() == null && n.getRight() == null)){
+        if((n.getLeft() == null && n.getRight() ==null) ){
             return false;
         }
         return isFull(n.getLeft()) && isFull(n.getRight()) && height(n.getLeft())== height(n.getRight());
     }
     
-    public String decision(List<String> respuestas){     
-        Iterator<String> it = respuestas.iterator();
-        return (respuestas!=null)? decision(it, (Nodo<String>)root) : "No hay Lista";
-    }
-    private String decision(Iterator<String> it, Nodo<String> parent){
-        boolean tiene=it.hasNext();
-        String valor = (it.hasNext())? it.next() : null;
-        boolean va=valor!=null;
-        boolean derecha = (valor!=null)? (valor.toLowerCase().equals("yes")) : false;
-        if(parent == null || valor==null){
-            return "INCERTIDUMBRE";
-        }
-        else if(derecha && parent.getRight().isHoja()){
-            return parent.getRight().getData();
-        }
-        else if(!derecha && parent.getLeft().isHoja()){
-            return parent.getLeft().getData();
-        }
-        else{
-            return (derecha)? decision(it, parent.getRight()): decision(it, parent.getLeft());
-        }
-    }
-    
     public boolean addMorse(E child, List<String> direcciones){
-        this.root = (this.root == null)? (Nodo<E>)(new Nodo<String>("INICIO")) : this.root;
+        this.root = (this.root == null)? (Nodo<E>)(new Nodo<>("INICIO")) : this.root;
         Iterator<String> it = direcciones.iterator();
-        if(child!=null && direcciones!=null){
+        if(child!=null ){
             addMorse(child, it, root);
             return true;
         }
@@ -342,89 +274,7 @@ public class BinaryTreeKevin<E> {
         return resp.toString();
     }
     
-    public List<E> equiposDerrotadosFases (String fase, HashMap<String, Integer> fases){
-        Integer lvlArb = fases.get(fase);
-        return (lvlArb!=null)? equiposDerrotadosFases(root, lvlArb, 0) : null;
-    }
-    private List<E> equiposDerrotadosFases (Nodo<E> parent, Integer lvlArb, Integer lvlAct){
-        List<E> resp = new ArrayList<>();
-        if(parent!=null){
-            lvlAct+=1;
-            if(lvlArb < lvlAct) resp.add(parent.getRight().getData());
-            if(!parent.getLeft().isHoja()){
-                resp.addAll(equiposDerrotadosFases(parent.getLeft(), lvlArb, lvlAct));
-            }
-            if(!parent.getRight().isHoja()){
-                resp.addAll(equiposDerrotadosFases(parent.getRight(), lvlArb, lvlAct));
-            }
-        }
-        return resp;
-    }
     
-    public List<E> equiposEliminados(E seleccion){
-        return equiposEliminados(seleccion, root);
-    }
-    private List<E> equiposEliminados(E seleccion, Nodo<E> parent){
-        List<E> resp = new ArrayList<>();
-        if((seleccion!=null && parent!=null) && !parent.isHoja()){ 
-            if( parent.getData().equals(seleccion)){
-                resp.add(parent.getRight().getData());
-                resp.addAll(equiposEliminados(seleccion, parent.getLeft()));
-            }
-            else{ // ayudo a evitar la búsqueda a ciegas
-                if(parent.getLeft().getData().equals(seleccion)){
-                    resp.addAll(equiposEliminados(seleccion, parent.getRight()));
-                }
-                else if(parent.getLeft().getData().equals(seleccion)){
-                    resp.addAll(equiposEliminados(seleccion, parent.getLeft()));
-                }
-                else{
-                    resp.addAll(equiposEliminados(seleccion, parent.getLeft()));
-                    resp.addAll(equiposEliminados(seleccion, parent.getRight()));
-                }
-            }
-        }
-        return resp;
-    }
-    
-    public boolean isBST(){
-        Comparator<E> comparador = (E o1, E o2) -> o1.hashCode()-o2.hashCode();
-        return isBST(root, comparador);
-    }
-    private boolean isBST(Nodo<E> parent, Comparator<E> comparador){
-        if(parent==null){
-            return true;
-        }
-        if(parent.isComplete()){
-            return (comparador.compare(parent.getData(), parent.getLeft().getData())>0 
-                    && comparador.compare(parent.getData(), parent.getRight().getData())<0 
-                    && isBST(parent.getLeft(), comparador)
-                    && isBST(parent.getRight(), comparador));
-        }
-        else if(!parent.isHoja()){
-                return (parent.getLeft()!=null)? 
-                        (comparador.compare(parent.getData(), parent.getLeft().getData())>0 && isBST(parent.getLeft(), comparador))
-                        :(comparador.compare(parent.getData(), parent.getRight().getData())<0 && isBST(parent.getRight(), comparador));
-        }
-        else{// si es hoja
-            return true;
-        } 
-    }
-    
-    public void crearArbolHeap(int inicio, int n){
-        root = (Nodo<E>)crearArbolHeap(inicio, n, root);
-    }
-    private Nodo<E> crearArbolHeap(int inicio, int n, Nodo<E> parent) {
-        if(n>0){
-            Nodo<Integer> raiz = new Nodo<>(inicio);
-            if(parent == null){
-                parent = (Nodo<E>)raiz;
-            }
-            parent.setLeft(crearArbolHeap((inicio*2)+1, n-1, parent.getLeft()));
-            parent.setRight(crearArbolHeap((inicio*2)+2, n-1, parent.getRight()));
-        }
-        return parent;
-    }
 
     @Override
     public int hashCode() {
@@ -433,7 +283,6 @@ public class BinaryTreeKevin<E> {
         return hash;
     }
     
-    //-----------------------------------TALLER-----------------------------------
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -445,7 +294,7 @@ public class BinaryTreeKevin<E> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final BinaryTreeKevin<E> other = (BinaryTreeKevin<E>) obj;        
+        final BinaryTree<E> other = (BinaryTree<E>) obj;        
         return (this.height() == other.height())? equals(this.root, other.root) : false;
     }
     private boolean equals(Nodo<E> thisParent, Nodo<E> otherParent){        

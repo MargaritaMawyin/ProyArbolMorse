@@ -6,32 +6,56 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import proyectoMorse.constantes.Constantes;
 
 /**
  * JavaFX App
  */
-public class App extends Application {
-    private static Scene scene;
-    public static HashMap<String, List<String>> mapaMorse = 
-            cargarMapaMorse(Constantes.pathArchivoMorse);
+
+   
     
-    public static Media mRaya = new Media(App.class.getResource("/recursos/Raya.mpeg").toString());
-    public static Media mPunto = new Media(App.class.getResource("/recursos/Punto.mpeg").toString());
-    public static MediaPlayer mediaPlayerDer = new MediaPlayer(mPunto);
-    public static MediaPlayer mediaPlayerIzq = new MediaPlayer(mRaya);
-    public static double tiempoDer;
-    public static double tiempoIzq;
+    
+    
+    public class App extends Application {
+    public static final String PATH_ARCHIVO_MORSE = "src/main/resources/recursos/codMorse.txt";
+    public static final String PATH_AUDIO_PUNTO = "src/main/resources/recursos/Punto.mpeg";
+    public static final String PATH_AUDIO_RAYA = "src/main/resources/recursos/Raya.mpeg";
+    private static Scene scene;
+    private final static HashMap<String, List<String>> mapaMorse = 
+            cargarMapaMorse(PATH_ARCHIVO_MORSE);
+    
+    private static Media mRaya = new Media(App.class.getResource("/recursos/Raya.mpeg").toString());
+    private static Media mPunto = new Media(App.class.getResource("/recursos/Punto.mpeg").toString());
+    private static MediaPlayer mediaPlayerDer = new MediaPlayer(mPunto);
+    private static MediaPlayer mediaPlayerIzq = new MediaPlayer(mRaya);
+    private static double tiempoDer;
+    private static double tiempoIzq;
+
+    public static HashMap<String, List<String>> getMapaMorse() {
+        return mapaMorse;
+    }
+    
+    public static Media getmRaya() {
+        return mRaya;
+    }
+
+    public static Media getmPunto() {
+        return mPunto;
+    }
+
+    public static double getTiempoDer() {
+        return tiempoDer;
+    }
+
+    public static double getTiempoIzq() {
+        return tiempoIzq;
+    }
 
     @Override
     public void start(Stage primaryStage){ 
@@ -95,8 +119,5 @@ public class App extends Application {
         return respuesta;
     }
     
-    private static Media cargarMedia(String path){
-        return new Media(App.class.getResource(path).toString());
-        //Media mPunto = new Media(App.getClass().getResource("/recursos/Punto.mpeg").toString());
-    }
+   
 }

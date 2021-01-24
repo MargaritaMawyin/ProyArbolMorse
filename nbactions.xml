@@ -10,7 +10,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>--module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules javafx.swing,javafx.graphics,javafx.fxml,javafx.media,javafx.controls -classpath %classpath proyectoMorse.controlador.App</exec.args>
+                <exec.args>--module-path "C:\Users\margo\Downloads\openjfx-11.0.2_windows-x64_bin-sdk\javafx-sdk-11.0.2\lib" --add-modules javafx.swing,javafx.graphics,javafx.fxml,javafx.media,javafx.controls -classpath %classpath proyectoMorse.controlador.App</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -39,7 +39,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>--module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules javafx.swing,javafx.graphics,javafx.fxml,javafx.media,javafx.controls -classpath %classpath proyectoMorse.controlador.App</exec.args>
+                <exec.args>--module-path "C:\Users\margo\Downloads\openjfx-11.0.2_windows-x64_bin-sdk\javafx-sdk-11.0.2\lib" --add-modules javafx.swing,javafx.graphics,javafx.fxml,javafx.media,javafx.controls -classpath %classpath proyectoMorse.controlador.App</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>

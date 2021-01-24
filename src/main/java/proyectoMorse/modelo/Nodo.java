@@ -44,7 +44,11 @@ public class Nodo<E>{
     public void setLeft(Nodo<E> left) {
         this.left = left;
     }
-
+/**
+ * Cuenta el numero de nodos padres
+ * @param parent es la raiz del arbol
+ * @return ??????????
+ */
     public int numNodesCompletes(Nodo<E> parent){
         if(parent==null)
             return 0;

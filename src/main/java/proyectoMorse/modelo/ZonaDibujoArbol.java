@@ -20,51 +20,70 @@ import proyectoMorse.controlador.App;
  * 
  * @author KevinChevez
  */
-public class ZonaDibujoArbol extends Pane {
-    private BinaryTreeKevin arbolBinario;
-    public static double CENTRO;
-    public static final double RADIO = 32/2;
+public class ZonaDibujoArbol extends Pane  {
+    private BinaryTree arbolBinario;
+    private double centro;
+    public static final double RADIO = 16;
     public static final double ANCHO = 10;
 
-    public ZonaDibujoArbol(BinaryTreeKevin arbolBinario, double x) {
-        this.arbolBinario = arbolBinario;      
-        this.CENTRO = x/2;
+    public double getCENTRO() {
+        return centro;
     }
 
-    public ZonaDibujoArbol(BinaryTreeKevin arbolBinario, double x, Node... arg0) {
+    public ZonaDibujoArbol() {
+    }
+
+    public ZonaDibujoArbol(BinaryTree arbolBinario, double x) {
+        this.arbolBinario = arbolBinario;      
+        this.centro = x/2;
+    }
+
+    public ZonaDibujoArbol(BinaryTree arbolBinario, double x, Node... arg0) {
         super(arg0);
         this.arbolBinario = arbolBinario;
-        this.CENTRO = x;
+        this.centro = x;
     }
 
-    public void setArbolBinario(BinaryTreeKevin arbolBinario) {
+    public void setArbolBinario(BinaryTree arbolBinario) {
         this.arbolBinario = arbolBinario;        
     }
     
     
     public ZonaDibujoArbol dibujarArbol(){
-        return dibujar(this, CENTRO-RADIO, 20, arbolBinario.getRoot(), 0);
+        return dibujar(this, centro-RADIO, 20, arbolBinario.getRoot(), 0);
     }
+    /**
+     * Dado los parametros se va creando el arbol morse grafico, se crea el cicrulo con la data
+     * para los nodos circulos no se crecen a medida que se van creando circulos hijos, se usan las
+     * variables extra y extra alt para que los circulos tomen distancia.
+     * @param p
+     * @param x
+     * @param y
+     * @param parent
+     * @param nivel
+     * @return el arbol binario con los caracteres
+     */
+    
     private ZonaDibujoArbol dibujar(Pane p, double x, double y, Nodo<String> parent, int nivel){
         if(parent!=null){            
-            double EXTRA = parent.numNodesCompletes(parent)*(ANCHO);
-            double EXTRA_ALT = ANCHO*(nivel+2);
-            Circulo circulo = new Circulo(parent.getData(), x, y, RADIO, ANCHO, this);
+            double extra_ancho = parent.numNodesCompletes(parent)*(ANCHO);
+            double extra_altura = ANCHO*(nivel+2);
+            Circulo circulo = new Circulo(parent.getData(), x, y, RADIO, ANCHO); //,this
             circulo.setFill(Color.CYAN);
             circulo.setStroke(Color.BLACK);
             if(parent.getLeft()!=null){
-                circulo.setLineaIzq(EXTRA, EXTRA_ALT);      
+                circulo.setLineaIzq(extra_ancho, extra_altura);      
                 if(circulo.getLineaIzq()!=null) p.getChildren().add(circulo.getLineaIzq());
             }
             if(parent.getRight()!=null){
-                circulo.setLineaDer(EXTRA, EXTRA_ALT);   
+                circulo.setLineaDer(extra_ancho, extra_altura);   
                 if(circulo.getLineaDer()!=null) p.getChildren().add(circulo.getLineaDer());
             }
             p.getChildren().addAll(circulo, circulo.getContenido());
             
-            dibujar(p, x-ANCHO-EXTRA, y+EXTRA_ALT, parent.getLeft(), ++nivel); 
+            dibujar(p, x-ANCHO-extra_ancho, y+extra_altura, parent.getLeft(), ++nivel); 
             nivel--;
-            dibujar(p, x+ANCHO+EXTRA, y+EXTRA_ALT, parent.getRight(), ++nivel);
+            dibujar(p, x+ANCHO+extra_ancho, y+extra_altura, parent.getRight(), ++nivel);
         }
         return (ZonaDibujoArbol)p;
     }
@@ -78,7 +97,7 @@ public class ZonaDibujoArbol extends Pane {
     }
     
     public Circulo obtenerCirculo(String data, ZonaDibujoArbol zonaDibujoArbol){
-        Circulo circuloBuscar = new Circulo(data, CENTRO-RADIO, 20, RADIO, ANCHO, this);
+        Circulo circuloBuscar = new Circulo(data, centro-RADIO, 20, RADIO, ANCHO);//, this
         for(Node n : zonaDibujoArbol.getChildren()){
             if(n instanceof Circulo && n.equals(circuloBuscar)){
                 return (Circulo)n;
@@ -117,7 +136,7 @@ public class ZonaDibujoArbol extends Pane {
                 System.out.println("Error en los audios: "+e.getMessage());
             }
         }else{
-            System.out.println("NO SE ENCONTRO LETRA, AGREGAR UNA ALERTA EN ZonaDibujoArbol, Linea 145");
+            System.out.println("NO SE ENCONTRO LETRA");
         }
     }
     
@@ -125,10 +144,10 @@ public class ZonaDibujoArbol extends Pane {
         double tiempo = 0;
         for(String code : listaMorse){
             if(code.equals("-")){
-                tiempo+=App.tiempoIzq;
+                tiempo+=App.getTiempoIzq();
             }
             else{
-                tiempo+=App.tiempoDer;
+                tiempo+=App.getTiempoDer();
             }
         }
         return tiempo;
@@ -136,16 +155,17 @@ public class ZonaDibujoArbol extends Pane {
     
     private void iterarLetras(Iterator<String> letraIte, Pane zonaDibujo){
         String letra = letraIte.next();
-        List<String> listaMorse = App.mapaMorse.get(letra);
+        List<String> listaMorse = App.getMapaMorse().get(letra);
         ListIterator<String> it = (listaMorse!=null)?listaMorse.listIterator():null;
         escucharLetra(it, arbolBinario.getRoot(), zonaDibujo);
-//        if(listaMorse!=null){
-//            try {
-//                Thread.sleep((long)contarTiempo(listaMorse));
-//            } catch (InterruptedException ex) {
-//                System.out.println("Error en iterar letras: "+ex.getMessage());
-//            }           
-//        }
+        if(listaMorse!=null){
+            try {
+                Thread.sleep((long)contarTiempo(listaMorse));
+            } catch (InterruptedException ex) {
+                ex.getLocalizedMessage();
+                Thread.currentThread().interrupt();
+            }           
+        }
         if(letraIte.hasNext()) iterarLetras(letraIte, zonaDibujo);
     }
     
@@ -159,4 +179,6 @@ public class ZonaDibujoArbol extends Pane {
         iterarLetras(letraIte, zonaDibujo);
         if(palabraIte.hasNext()) iterarPalabras(palabraIte, zonaDibujo);
     }
+
+   
 }

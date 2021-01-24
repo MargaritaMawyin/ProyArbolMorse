@@ -7,15 +7,12 @@ module proyectoMorse {
     requires javafx.web;
     requires javafx.media;
     requires javafx.fxml;
-    
-    opens proyectoMorse.colecciones to javafx.fxml, javafx.base,javafx.controls,javafx.graphics,javafx.swing,javafx.web,javafx.media,java.base;
-    exports proyectoMorse.colecciones;
-    
+
     opens proyectoMorse.controlador to javafx.fxml, javafx.base,javafx.controls,javafx.graphics,javafx.swing,javafx.web,javafx.media,java.base;
     exports proyectoMorse.controlador;
     
-//    opens proyectoMorse.modelo to javafx.fxml;
-//    exports proyectoMorse.modelo;
+    opens proyectoMorse.modelo to javafx.fxml;
+    exports proyectoMorse.modelo;
     
     
 }

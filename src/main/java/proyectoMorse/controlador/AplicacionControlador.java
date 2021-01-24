@@ -12,10 +12,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import proyectoMorse.modelo.BinaryTreeKevin;
+import proyectoMorse.modelo.BinaryTree;
 import proyectoMorse.modelo.ZonaDibujoArbol;
 
 /**
@@ -25,8 +24,7 @@ import proyectoMorse.modelo.ZonaDibujoArbol;
  */
 public class AplicacionControlador implements Initializable {
 
-    @FXML
-    private Button btnEscuchar;
+    
     @FXML
     private TextField campoTexToModify;
     @FXML
@@ -41,28 +39,25 @@ public class AplicacionControlador implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         double widhtZona = zonaDeDibujo.getPrefWidth();
-        zonaDeArbol = new ZonaDibujoArbol(cargarArbol(App.mapaMorse), widhtZona);
+        zonaDeArbol = new ZonaDibujoArbol(cargarArbol(App.getMapaMorse()), widhtZona);
         zonaDeArbol.dibujarArbol();
         zonaDeDibujo.getChildren().add(zonaDeArbol);
     }    
     
     @FXML
-    private void escuchar(ActionEvent event) {        
+    private void escuchar(ActionEvent event) throws InterruptedException {        
         String textRecolected = campoTexToModify.getText().toUpperCase();
         campoTexToModify.clear();
-        if(textRecolected.isBlank()) {
-            System.out.println("No escribió algo");
-        }else{
-            System.out.println("Está escuchando... shhh");
             System.out.println(textRecolected);
             zonaDeArbol.escuchar(textRecolected, zonaDeDibujo);
-        }
+//        }
     }
 
-    private BinaryTreeKevin<String> cargarArbol(HashMap<String, List<String>> mapa){
-        BinaryTreeKevin<String> arbolBinario = new BinaryTreeKevin<>();
-        mapa.keySet().forEach((clave) -> {
+    private BinaryTree<String> cargarArbol(HashMap<String, List<String>> mapa){
+        BinaryTree<String> arbolBinario = new BinaryTree<>();
+        mapa.keySet().forEach(clave -> {
             arbolBinario.addMorse(clave, mapa.get(clave));
         });
         return arbolBinario;

@@ -16,7 +16,7 @@
 
 <Pane prefHeight="370.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoMorse.controlador.AplicacionControlador">
    <children>
-      <Pane fx:id="zonaDeDibujo" layoutX="11.0" layoutY="14.0" prefHeight="297.0" prefWidth="803.0">
+      <Pane fx:id="zonaDeDibujo" layoutX="11.0" layoutY="14.0" prefHeight="297.0" prefWidth="803.0" stylesheets="@../css/estilos.css">
          <children>
             <GridPane layoutX="645.0">
                <columnConstraints>
@@ -85,7 +85,7 @@
                </children>
             </GridPane>
          </children></Pane>
-      <Button fx:id="btnEscuchar" layoutX="381.0" layoutY="331.0" mnemonicParsing="false" onAction="#escuchar" text="Escuchar" />
+      <Button layoutX="381.0" layoutY="331.0" mnemonicParsing="false" onAction="#escuchar" stylesheets="@../css/estilos.css" text="Escuchar" />
       <TextField fx:id="campoTexToModify" focusTraversable="false" layoutX="301.0" layoutY="296.0" prefHeight="31.0" prefWidth="208.0" promptText="Escriba el texto a codificar en Morse" />
       <GridPane layoutX="32.0" layoutY="322.0" prefHeight="35.0" prefWidth="131.0">
          <columnConstraints>
