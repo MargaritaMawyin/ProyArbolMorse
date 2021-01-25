@@ -10,7 +10,8 @@ import java.util.Objects;
 /**
  * 
  * @author KevinChevez
- * @param <E>
+ * @param <E> Recibe como parámetro una variable parametrizada, indicando así
+ * que es apta para cualquier tipo de variable.
  */
 public class BinaryTree<E> {
     private Nodo<E> root;
